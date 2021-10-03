@@ -1,0 +1,63 @@
+.list {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    cursor: pointer;
+
+    &.active {
+      background: #FFFFFF;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+    }  
+
+    .badge {
+      position: relative;
+      left: 5px;
+      width: 10px;
+      height: 10px;
+      border-radius: 30px;
+
+      &--green {
+        background-color: #42B883;
+      }
+
+      &--blue {
+        background-color: #64C4ED;
+      }
+
+      &--pink {
+        background-color: #FFBBCC;
+      }
+    }
+  }
+
+.items {
+  &__add-button {
+    span, svg {
+      opacity: 0.4;
+    }
+
+    &:hover {
+      span, svg {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+
+.menu {
+  &__list:first-child {
+    margin-bottom: 30px;
+  }
+}
+
+  .menu__list-title {
+    font-size: 14px;
+    color: #000;
+
+    & i {
+      display: inline-flex;
+      margin-right: 8px;
+    }
+  }

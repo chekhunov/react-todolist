@@ -1,3 +1,10 @@
+plugins
+node-sass
+macro-css
+typescript
+
+if create-react-app тогда npm add -D react-test-renderer
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
