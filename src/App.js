@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import List from './components/list'
-import AddButtonList from './components/AddButtonList'
+import AddButtonList from './components/addButtonList/AddButtonList.jsx'
+import DB from './assets/db.json'
 
+//во втором листе берем из db lists проходимся по нему и создаем новый атрибут color 
+//console.log(DB.colors.filter(color => color.id === item.colorId)[0].name) и 
+//присваиваем ему имя по id имя
 function App() {
+  const [lists, setLists] = useState(DB.lists.map(item => {         
+    item.color = DB.colors.filter(color => color.id === item.colorId)[0].name;
+    return item
+  }))
+
+  const onAddList = (obj) => {
+    //берем создаем новый массив вклпдываем в него все что есть 
+    // в массиве lists и в конец добавляем полученный обьект obj
+    const newList = [
+      ...lists, 
+      obj
+    ]
+    setLists(newList)
+  }
+
   return (
     <div className="todo h100p">
       <div className="container">
@@ -23,28 +42,18 @@ function App() {
                 name: 'Все задачи',
                 active: true
               }
-            ]} 
-            
+            ]}         
             />
 
-            <List items={[
-              {
-                color: 'green',
-                name: 'Покупки'
-              },
-              {
-                color: 'blue',
-                name: 'Фронтенд'
-              },
-              {
-                color: 'pink',
-                name: 'Фильмы и сериалы'
-              }
-            ]} 
+            <List 
+            items={lists}
+            onRemove={(e) => {console.log(e)}} 
             isRemovable
             />
 
-            <AddButtonList />
+            <AddButtonList 
+            onAdd={onAddList} 
+            colors={DB.colors}/>
           </div>
 
           <div className="todo__tasks pt-50">

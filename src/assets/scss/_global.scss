@@ -79,3 +79,32 @@ body {
     padding: 0 15px;
   }
 }
+
+.field {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #fff;
+  border: 1px solid #efefef;
+  border-radius: 4px;
+
+  &:focus {
+    border-color: #cecbcb;
+  }
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #4DD599;
+  border-radius: 4px;
+  color: #fff;
+  border: 0;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: darken(#4dd599, 10%);
+  }
+
+  &:active {
+    background-color: darken(#4dd599, 20%);
+  }
+}

@@ -1,8 +1,23 @@
 .list {
+  $self: &;
     display: flex;
     align-items: center;
-    padding: 10px 14px;
+    padding: 10px 12px;
     cursor: pointer;
+
+    &:hover {
+      background-color: rgba(255,255,255,0.5);
+      // .list__remove-icon {
+      //   opacity: 1;
+      //   transition: opacity 0.3s
+      // }
+      //тожесамое ниже через переменную
+      #{$self}__remove-icon {
+        opacity: 0.4;
+        transition: opacity 0.3s;
+      }
+      transition: background-color 0.3s;
+    }
 
     &.active {
       background: #FFFFFF;
@@ -13,20 +28,19 @@
     .badge {
       position: relative;
       left: 5px;
-      width: 10px;
-      height: 10px;
-      border-radius: 30px;
+    }
 
-      &--green {
-        background-color: #42B883;
-      }
+    span {
+      flex: 1;
+    }
 
-      &--blue {
-        background-color: #64C4ED;
-      }
+    
+    #{$self}__remove-icon {
+      opacity: 0;
 
-      &--pink {
-        background-color: #FFBBCC;
+      &:hover {
+        opacity: 1;
+        transition: opacity 0.3s;
       }
     }
   }
