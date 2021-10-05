@@ -6,6 +6,13 @@ import removeSvg from '../../assets/img/remove.svg'
 
 //функция в виде ES6
 const List = ({items, isRemovable, className, click, onRemove}) => {
+
+  const removeList = (item) => {
+    if (window.confirm('Выдействительно хотитеудалить')) {
+      onRemove(item)
+    }
+
+  }
     return (
         <ul className="menu__list items" onClick={click}>
               {items && items.map((item) => 
@@ -22,7 +29,7 @@ const List = ({items, isRemovable, className, click, onRemove}) => {
                 className={"list__remove-icon"} 
                 src={removeSvg} 
                 alt="remove svg"
-                onClick={() => onRemove(item)} 
+                onClick={() => removeList(item)} 
                 />}
               </li>
               )}

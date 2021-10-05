@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import List from './components/list'
+import Tasks from './components/tasks'
 import AddButtonList from './components/addButtonList/AddButtonList.jsx'
 import DB from './assets/db.json'
 
@@ -56,9 +57,7 @@ function App() {
             colors={DB.colors}/>
           </div>
 
-          <div className="todo__tasks pt-50">
-            <div className="todo__title">Фронтенд</div>
-          </div>
+          <Tasks />
         </div>
       </div>
     </div>

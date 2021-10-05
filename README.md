@@ -1,7 +1,10 @@
-plugins
+plugins:
 node-sass
 macro-css
+npm i -g json-server
 typescript
+connect for my json: 
+json-server ./src/assets/db.json --port 3001 --watch
 
 if create-react-app тогда npm add -D react-test-renderer
 
