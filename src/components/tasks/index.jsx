@@ -15,7 +15,7 @@ export default function Tasks() {
             <div className="tasks__items">
                 <div className="tasks__item">
                     <input id="check" type="checkbox" className="tasks__input" />
-                    <label for="check" className="checkbox">
+                    <label htmlFor="check" className="checkbox">
                     <svg 
                     className=""
                     width="11" 
@@ -32,7 +32,7 @@ export default function Tasks() {
                     </svg>
                     </label>
 
-                    <input className="tasks__input-text" type="text" value="Изучить JavaScript" />
+                    {/* <input className="tasks__input-text" type="text" value="Изучить JavaScript" /> */}
                 </div>
             </div>
         </div>

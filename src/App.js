@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import List from './components/list'
-import Tasks from './components/tasks'
-import AddButtonList from './components/addButtonList/AddButtonList.jsx'
+import React, { useState, useEffect } from 'react';
+import { List, Tasks, AddButtonList } from './components'
+import axios from 'axios';
 import DB from './assets/db.json'
 
 //во втором листе берем из db lists проходимся по нему и создаем новый атрибут color 
 //console.log(DB.colors.filter(color => color.id === item.colorId)[0].name) и 
 //присваиваем ему имя по id имя
 function App() {
+  useEffect(() => {
+    //получаем список цветов из json
+    axios.get('http://localhost:3001/lists?_expand=color').then(({ data }) => {console.log(data)})
+  },[])
+
   const [lists, setLists] = useState(DB.lists.map(item => {         
     item.color = DB.colors.filter(color => color.id === item.colorId)[0].name;
     return item
