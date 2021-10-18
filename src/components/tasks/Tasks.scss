@@ -1,5 +1,6 @@
 .todo {
  &__tasks {
+     min-width: 75%;
    min-height: 100vh;
    flex: 1;
    padding-left: 55px;
@@ -61,11 +62,22 @@
  .tasks {
      &__items {
         padding: 60px 0;
-     }
+     
+        h2 {
+            font-weight: bold;
+            font-size: 22px;
+            color: #c9d1d3;
+         }
+    }
 
      &__item {
+        width: 100%;
         display: flex;
         align-items: center;
+
+        input {
+            
+        }
 
         input:checked + label {
             background-color: #4dd599;
@@ -85,6 +97,8 @@
      }
 
      &__input-text {
+        width: 100%;
+        min-width: 400px; 
         font-size: 17px;
         border: 0;
         outline: none;

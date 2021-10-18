@@ -1,21 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { List, Tasks, AddButtonList } from './components'
 import axios from 'axios';
-import DB from './assets/db.json'
+// import DB from './assets/db.json'
 
 //во втором листе берем из db lists проходимся по нему и создаем новый атрибут color 
 //console.log(DB.colors.filter(color => color.id === item.colorId)[0].name) и 
 //присваиваем ему имя по id имя
 function App() {
+  const [activeItem, setActiveItem] = useState(null);
+  const [colors, setColors] = useState(null);
+  const [lists, setLists] = useState(null)         
+  // const [lists, setLists] = useState(DB.lists.map(item => {         
+  //   item.color = DB.colors.filter(color => color.id === item.colorId)[0].name;
+  //   return item
+  // }))
   useEffect(() => {
-    //получаем список цветов из json
-    axios.get('http://localhost:3001/lists?_expand=color').then(({ data }) => {console.log(data)})
-  },[])
+    let isCanceled = false
 
-  const [lists, setLists] = useState(DB.lists.map(item => {         
-    item.color = DB.colors.filter(color => color.id === item.colorId)[0].name;
-    return item
-  }))
+    async function fetchData() {
+      try {
+    //получаем список цветов из json
+    //_expand=color обьединяет связные таблицы
+    //_embed=tasks найди в таблице таскс значит взять из таскс ид 1 значения и добавить в листс ид 1
+    axios.get('http://localhost:3001/lists?_expand=color&_embed=tasks')
+    .then(({ data }) => {
+      setLists(data)
+    })
+    axios.get('http://localhost:3001/colors')
+    .then(({ data }) => {
+      setColors(data);
+      });
+
+    } catch (err) {
+    alert('Hе удалось загрузить список новостей');
+    }
+  }
+
+  fetchData();
+
+    return () => (isCanceled = true)
+  },[])
 
   const onAddList = (obj) => {
     //берем создаем новый массив вклпдываем в него все что есть 
@@ -24,6 +48,16 @@ function App() {
       ...lists, 
       obj
     ]
+    setLists(newList)
+  }
+
+  const onEditListTitle = (id, title) => { 
+    const newList = lists.map(item => {
+      if(item.id === id) {
+        item.name = title
+      }
+      return item;
+    })
     setLists(newList)
   }
 
@@ -45,23 +79,28 @@ function App() {
                 </svg>)
                 ,
                 name: 'Все задачи',
-                active: true
+                active: true,
               }
             ]}         
             />
 
             <List 
             items={lists}
-            onRemove={(e) => {console.log(e)}} 
+            onRemove={(id) => {
+              const newLists = lists.filter(item => item.id !== id)
+              setLists(newLists)
+            }} 
+            onClickItem = {item => setActiveItem(item)}
+            activeItem={activeItem}
             isRemovable
             />
 
             <AddButtonList 
             onAdd={onAddList} 
-            colors={DB.colors}/>
+            colors={colors}/>
           </div>
 
-          <Tasks />
+          {lists && activeItem && <Tasks lists={activeItem} onEditTitle={onEditListTitle} />}
         </div>
       </div>
     </div>

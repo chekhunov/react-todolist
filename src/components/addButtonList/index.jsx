@@ -7,17 +7,17 @@ import closeSvg from '../../assets/img/close.svg'
 import './AddButtonList.scss'
 const AddButtonList = ({colors, onAdd}) => {
 
+const [isLoading, setIsLoading] = useState(false);
 const [visiblePopup, setVisiblePopup] = useState(false)
 const [selectedColor, selectColor] = useState(3)
 const [inputValue, setInputValue] = useState('')
 
-
 useEffect(()=>{
   if(Array.isArray(colors)){
     selectColor(colors[0].id)
-    console.log()
   }
 },[colors])
+console.log(colors)
 
 const onClose = () => {
   //закрываем окно
@@ -33,14 +33,21 @@ const addList = () => {
     alert('Введите название списка')
     return;
   }
+  setIsLoading(true);
 
-  axios.post('http://localhost:3001/lists', {
-    name: inputValue, colorId: selectedColor
-  }).then(({ data }) => {
+  axios
+  .post('http://localhost:3001/lists', {
+    name: inputValue, 
+    colorId: selectedColor
+  })
+  .then(({ data }) => {
     const color = colors.filter(c => c.id === selectedColor)[0].name;
     const listObj = { ...data, color: { name: color } }
     onAdd(listObj)
     onClose()
+  })
+  .finally(() => {
+    setIsLoading(false)
   })
 }
 
@@ -61,15 +68,15 @@ const addList = () => {
             <path 
             d="M6 1V11" 
             stroke="#868686" 
-            stroke-width="1.5" 
-            stroke-linecap="round" 
-            stroke-linejoin="round"/>
+            strokeWidth="1.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"/>
             <path 
             d="M1 6H11" 
             stroke="#868686" 
-            stroke-width="1.5" 
-            stroke-linecap="round" 
-            stroke-linejoin="round"/>
+            strokeWidth="1.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"/>
             </svg>
             )
             ,
@@ -83,22 +90,26 @@ const addList = () => {
 
             <img 
             onClick={onClose}
-            className="add-list__popup-close-btn" 
             src={closeSvg} 
+            className="add-list__popup-close-btn" 
             alt="close button" />
 
-            <input className="field" value={inputValue} onChange={e => setInputValue(e.target.value)} type="text" placeholder="Назначение папки" />
+            <input className="field" 
+            value={inputValue} 
+            onChange={e => setInputValue(e.target.value)} 
+            type="text" 
+            placeholder="Назначение папки" />
+
             <div className="add-list__popup-colors">
         
-              {colors && colors.map((color, index) => 
+              {colors && colors.map((color) => 
             
                   <Badge 
                   onClick = {() => selectColor(color.id)}
-                  key={index} 
+                  key={color.id} 
                   color={color.name} 
                   className={selectedColor === color.id && 'active'}
-                  />
-             
+                  />   
               )}
            
             </div>
@@ -107,7 +118,8 @@ const addList = () => {
             onClick={addList} 
             className="button"
             >
-              Добавить</button>
+             {isLoading ? 'Добавление...' : 'Добавить'}
+              </button>
             </div>}
         </div>
     )
