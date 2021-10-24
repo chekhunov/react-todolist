@@ -2,7 +2,7 @@
 
 html,
 body {
-  overflow-x: hidden;
+  // overflow-x: hidden;
 }
 
 .animate-section {
@@ -16,7 +16,7 @@ body {
 .mobile-menu {
   display: none;
   position: fixed;
-  height: 100vh;
+  // height: 100vh;
   width: 100%;
   max-width: 100%;
   // background-image: url('/images/content/bg100for100.jpg');
@@ -33,7 +33,6 @@ body {
   // background-image: url('/images/content/bg100for100.jpg');
   background-repeat: repeat;
   background-size: 100px;
-  overflow-x: hidden;
   @extend %montserrat-400;
 }
 
@@ -54,7 +53,6 @@ body {
   max-width: 1120px;
   margin: 0 auto;
   padding: 0 25px;
-  overflow: hidden;
 
   @media screen and (max-width: 767px) {
     padding: 0 15px;
@@ -83,6 +81,7 @@ body {
 .field {
   width: 100%;
   padding: 8px 12px;
+  font-size: 14px;
   background-color: #fff;
   border: 1px solid #efefef;
   border-radius: 4px;
@@ -93,11 +92,14 @@ body {
 }
 
 .button {
+  margin-top: 15px;
   padding: 10px 20px;
+  font-size: 14px;
   background-color: #4DD599;
   border-radius: 4px;
   color: #fff;
   border: 0;
+  cursor: pointer;
   transition: background-color 0.3s;
 
   &:hover {
@@ -106,5 +108,20 @@ body {
 
   &:active {
     background-color: darken(#4dd599, 20%);
+  }
+
+  &--gray {
+    margin-left: 10px;
+    background-color: #f4f6f8;
+    color: #444444;
+
+    &:hover {
+      background-color: darken(#f4f6f8, 10%);
+    }
+
+    &:active {
+      background-color: darken(#f4f6f8, 20%);
+    }
+
   }
 }

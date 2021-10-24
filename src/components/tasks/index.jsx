@@ -3,7 +3,8 @@ import axios from 'axios'
 import AddTaskForm from './AddTaskForm.jsx'
 import './Tasks.scss'
 
-export default function Tasks({ lists, onEditTitle }) {
+export default function Tasks({ lists, onEditTitle, onAddTask, withoutEmpty }) {
+    
 
     const editTitle = () => {
         console.log('prompt() result via promise: ');
@@ -27,7 +28,7 @@ export default function Tasks({ lists, onEditTitle }) {
     }
 
     return (
-        <div className="todo__tasks pt-50">
+        <div className="pt-50">
             <div className="todo__title">
                 {lists.name}
                 <span onClick={() => editTitle()}>
@@ -38,7 +39,7 @@ export default function Tasks({ lists, onEditTitle }) {
             </div>
 
             <div className="tasks__items">
-                {!lists.tasks.length && <h2>Задачи отсутствуют</h2>}
+                {!withoutEmpty && !lists.tasks.length && <h2>Задачи отсутствуют</h2>}
                 {lists.tasks.map(task => (
                     <div className="tasks__item" key={task.id}>
                         <input id={`task-${task.id}`} type="checkbox" className="tasks__input" />
@@ -63,7 +64,10 @@ export default function Tasks({ lists, onEditTitle }) {
                     </div>
                 ))}  
 
-                <AddTaskForm />
+                <AddTaskForm 
+                lists={lists} 
+                onAddTask={onAddTask}
+                />
 
             </div>
         </div>

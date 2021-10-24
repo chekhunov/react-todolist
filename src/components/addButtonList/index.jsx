@@ -34,7 +34,6 @@ const addList = () => {
     return;
   }
   setIsLoading(true);
-
   axios
   .post('http://localhost:3001/lists', {
     name: inputValue, 
@@ -46,6 +45,9 @@ const addList = () => {
     onAdd(listObj)
     onClose()
   })
+  .catch(() => {
+    alert ('Ошибка добавления')
+})
   .finally(() => {
     setIsLoading(false)
   })
