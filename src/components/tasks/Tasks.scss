@@ -1,7 +1,8 @@
 .todo {
+    height: calc(100vh -100px);
+    width: calc(100vw -100px);
  &__tasks {
-    // width: calc(70%);
-    height: calc(100% - 120px);
+    background-color: #fcf9f9;
     overflow: auto;
     flex: 1;
     padding-left: 55px;

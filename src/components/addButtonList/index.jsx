@@ -17,7 +17,6 @@ useEffect(()=>{
     selectColor(colors[0].id)
   }
 },[colors])
-console.log(colors)
 
 const onClose = () => {
   //закрываем окно
@@ -56,7 +55,7 @@ const addList = () => {
     return (
         <div className="add-list">
           <List 
-          click = {() => setVisiblePopup(!visiblePopup)}
+          onClick = {() => setVisiblePopup(!visiblePopup)}
           items={[
           {
             className: "items__add-button",

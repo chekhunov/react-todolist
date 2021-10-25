@@ -6,7 +6,7 @@ import './List.scss';
 import removeSvg from '../../assets/img/remove.svg'
 
 //функция в виде ES6
-const List = ({items, isRemovable, className, click, onRemove, onClickItem, activeItem }) => {
+const List = ({items, isRemovable, onClick, onRemove, onClickItem, activeItem}) => {
 
   const removeList = (item) => {
     if (window.confirm('Вы действительно хотите удалить?')) {
@@ -14,14 +14,15 @@ const List = ({items, isRemovable, className, click, onRemove, onClickItem, acti
         onRemove(item.id)
       })
     }
-
   }
     return (
-        <ul className="menu__list items" onClick={click}>
-              {items && items.map((item) => 
+        <ul className="menu__list items" onClick={onClick}>
+              {items.map((item) => 
               <li 
               key={item.name + item.id} 
-              className={classNames( "menu__list-title mb-10 list", item.className, {active: activeItem && activeItem.id === item.id})}
+              className={classNames( "menu__list-title mb-10 list", item.className, {
+                active: item.active ? item.active : activeItem && activeItem.id === item.id
+              })}
               onClick={onClickItem ? () => onClickItem(item) : null}
               >
               <i>

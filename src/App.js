@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { List, Tasks, AddButtonList } from './components'
 import axios from 'axios';
-import { Route, useHistory } from 'react-router-dom'
+import { Route, useHistory, useLocation } from 'react-router-dom'
 // import DB from './assets/db.json'
 
 //во втором листе берем из db lists проходимся по нему и создаем новый атрибут color 
 //console.log(DB.colors.filter(color => color.id === item.colorId)[0].name) и 
 //присваиваем ему имя по id имя
 function App() {
+  let history = useHistory(); //неработает на useEffect
+  const location = useLocation();  
+  const [activeHistory, setActiveHistory] = useState(history.location.pathname);
   const [activeItem, setActiveItem] = useState(null);
   const [colors, setColors] = useState(null);
   const [lists, setLists] = useState(null)    
-  let history = useHistory();     
   // const [lists, setLists] = useState(DB.lists.map(item => {         
   //   item.color = DB.colors.filter(color => color.id === item.colorId)[0].name;
   //   return item
@@ -37,7 +39,6 @@ function App() {
     alert('Hе удалось загрузить список новостей');
     }
   }
-
   fetchData();
 
     return () => (isCanceled = true)
@@ -72,6 +73,14 @@ function App() {
     })
     setLists(newList)
   }
+  
+  useEffect(() => {
+    const listId = history.location.pathname.split('lists/')[1];
+    if(lists) {
+      const list = lists.find(list => list.id === Number(listId));
+      setActiveItem(list)
+    }
+  }, [lists, location.pathname])
 
   return (
     <div className="todo">
@@ -85,6 +94,7 @@ function App() {
             }
             items={[
               {
+                active: history.location.pathname === '/',
                 icon: (
                 <svg 
                 width="14" 
@@ -96,49 +106,56 @@ function App() {
                 </svg>)
                 ,
                 name: 'Все задачи',
-                active: true,
               }
             ]}         
             />
 
-            <List 
-            items={lists}
-            onRemove={(id) => {
-              const newLists = lists.filter(item => item.id !== id)
-              setLists(newLists)
-            }} 
-            onClickItem = {list => {
-              history.push(`/lists/${list.id}`)
-              // setActiveItem()
-              }
-            }
-            activeItem={activeItem}
-            isRemovable
-            />
-
+          {lists ? (
+             <List 
+             items={lists}
+             onRemove={(id) => {
+               const newLists = lists.filter(item => item.id !== id)
+               setLists(newLists)
+             }} 
+             onClickItem = {list => {
+                 history.push(`/lists/${list.id}`)
+               }
+             }
+             activeItem={activeItem}
+             isRemovable
+             location={location}
+             />  
+          ) : (
+            'Загрузка...'
+          )}
             <AddButtonList 
             onAdd={onAddList} 
             colors={colors}/>
           </div>
 
           <div className="todo__tasks">
+   
             <Route exact path="/">
-              {lists && lists.map((list) => (
+              {lists && 
+              lists.map(list => (
                 <Tasks 
                 key={list.id}
                 lists={list} 
-                onEditTitle={onEditListTitle}
                 onAddTask={onAddTask} 
+                onEditTitle={onEditListTitle}
                 withoutEmpty
                 />
                 ))}
             </Route>
-            <Route path="/lists/:id" />
-              {lists && activeItem && 
+            <Route path="/lists/:id">
+              {lists && activeItem && (
               <Tasks 
               lists={activeItem} 
-              onEditTitle={onEditListTitle}
-              onAddTask={onAddTask} />}
+              onAddTask={onAddTask} 
+              onEditTitle={onEditListTitle} />
+              )}
+            </Route>
+
           </div>
           </div>
         </div>
