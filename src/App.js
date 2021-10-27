@@ -28,6 +28,7 @@ function App() {
     //_embed=tasks найди в таблице таскс значит взять из таскс ид 1 значения и добавить в листс ид 1
     axios.get('http://localhost:3001/lists?_expand=color&_embed=tasks')
     .then(({ data }) => {
+      console.log(data)
       setLists(data)
     })
     axios.get('http://localhost:3001/colors')
@@ -64,6 +65,32 @@ function App() {
     setLists(newList)
   }
 
+  const onEditTasks = (listId, taskObj) => {
+      const newTaskText = prompt('Текст задачи', taskObj.text)
+
+    if(newTaskText) {
+      return;
+    }
+
+      const newList = lists.map((list) => {
+        if(list.id === listId) {
+          list.tasks = list.task.map(task => {
+            if(task.id === taskObj.id) {
+              task.text = newTaskText
+            }
+            return task;
+          })
+        }
+        return list;
+      });
+      setLists(newList)
+        axios
+        .patch('http://localhost:3001/tasks/' + taskObj.id, {text: newTaskText})
+        .catch(() => {
+            alert('не удалось обновить')
+        })
+  }
+
   const onEditListTitle = (id, title) => { 
     const newList = lists.map(item => {
       if(item.id === id) {
@@ -73,6 +100,24 @@ function App() {
     })
     setLists(newList)
   }
+
+
+  const onRemoveTask =(listId, taskId) => {
+    if(window.confirm('Удалить задачу?')) {
+      const newList = lists.map((item) => {
+        if(item.id === listId) {
+          item.tasks = item.task.filter(task => task.id !== taskId)
+        }
+        return item;
+      })
+      setLists(newList)
+        axios
+        .delete('http://localhost:3001/tasks/' + taskId,)
+        .catch(() => {
+            alert('не удалось обновить')
+        })
+    }
+}
   
   useEffect(() => {
     const listId = history.location.pathname.split('lists/')[1];
@@ -94,7 +139,7 @@ function App() {
             }
             items={[
               {
-                active: history.location.pathname === '/',
+                active: !activeItem,
                 icon: (
                 <svg 
                 width="14" 
@@ -152,7 +197,10 @@ function App() {
               <Tasks 
               lists={activeItem} 
               onAddTask={onAddTask} 
-              onEditTitle={onEditListTitle} />
+              onEditTitle={onEditListTitle}
+              onRemoveTask={onRemoveTask}
+              onEditTasks={onEditTasks}
+              />
               )}
             </Route>
 

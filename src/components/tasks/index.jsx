@@ -2,10 +2,10 @@ import React from 'react'
 import axios from 'axios'
 import AddTaskForm from './AddTaskForm.jsx'
 import './Tasks.scss'
+import Task from './TaskItem.jsx'
 
-export default function Tasks({ lists, onEditTitle, onAddTask, withoutEmpty }) {
+export default function Tasks({ lists, onEditTitle, onAddTask, withoutEmpty, onRemoveTask, onEditTasks }) {
     
-
     const editTitle = () => {
         console.log('prompt() result via promise: ');
         const newTitle = prompt('Название списка', lists.name)
@@ -39,32 +39,13 @@ export default function Tasks({ lists, onEditTitle, onAddTask, withoutEmpty }) {
             </div>
 
             <div className="tasks__items">
-                {!withoutEmpty && !lists.tasks.length && <h2>Задачи отсутствуют</h2>}
-                {lists.tasks.map(task => (
-                    <div className="tasks__item" key={task.id}>
-                        <input id={`task-${task.id}`} type="checkbox" className="tasks__input" />
-
-                        <label htmlFor={`task-${task.id}`} className="checkbox">
-                            <svg 
-                            className=""
-                            width="11" 
-                            height="8" 
-                            viewBox="0 0 11 8" 
-                            fill="none" 
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path 
-                            d="M9.29999 1.20001L3.79999 6.70001L1.29999 4.20001" 
-                            stroke="#000" 
-                            strokeWidth="1.5"
-                            strokeLinecap="round" 
-                            strokeLinejoin="round"/>
-                            </svg>
-                        </label>
-                        <input className="tasks__input-text" readOnly type="text" value={task.text} />
-                    </div>
+                {!withoutEmpty && lists.tasks && !lists.tasks.length && <h2>Задачи отсутствуют</h2>}
+                {lists.tasks && lists.tasks.map(task => (
+                    <Task key={task.id} lists={lists} onRemove={onRemoveTask} onEdit={onEditTasks} {...task} />
                 ))}  
 
                 <AddTaskForm 
+                key={lists.id}
                 lists={lists} 
                 onAddTask={onAddTask}
                 />
